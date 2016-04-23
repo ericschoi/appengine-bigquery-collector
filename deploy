@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+server_dir = File.expand_path(File.dirname(__FILE__))
+Dir.chdir(server_dir) do
+  system <<-CMD
+    gcloud preview app --project glengarrygames-1074 deploy app.yaml --promote
+  CMD
+end
+exit($?.exitstatus)
