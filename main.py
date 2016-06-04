@@ -39,15 +39,15 @@ def insert_event(project_id, dataset_id, table_id):
     rows = [request.json] if type(request.json) == type(dict()) else request.json
     for row in rows:
         insert_id = row["_id"]["$oid"]
-        event_key = row["eventKey"]
-        player_id = row["playerID"]
-        timestamp = row["timestamp"]
+        event_type = row["type"]
+        player_id = row["player_id"]
+        ts = row["ts"]
         body = simplejson.dumps(row)
         data.append({
             "json": {
-                "event_key": event_key,
+                "event_type": event_type,
                 "player_id": player_id,
-                "timestamp": timestamp,
+                "timestamp": ts,
                 "data": body
             },
             "insertId": insert_id
