@@ -21,7 +21,7 @@ bigquery = build('bigquery', 'v2', credentials=credentials)
 @app.route('/')
 def index():
     """Return a friendly HTTP greeting."""
-    return "Event Collector v2"
+    return "Event Collector v1.0.1"
 
 
 # @app.route('/e/<project_id>/<dataset_id>', methods=["GET"])
