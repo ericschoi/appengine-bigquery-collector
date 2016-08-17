@@ -21,7 +21,7 @@ bigquery = build('bigquery', 'v2', credentials=credentials)
 @app.route('/')
 def index():
     """Return a friendly HTTP greeting."""
-    return "Hello World"
+    return "Event Collector v2"
 
 
 # @app.route('/e/<project_id>/<dataset_id>', methods=["GET"])
@@ -39,7 +39,7 @@ def insert_event(project_id, dataset_id, table_id):
     rows = [request.json] if type(request.json) == type(dict()) else request.json
     for row in rows:
         insert_id = row["_id"]["$oid"]
-        event_type = row["type"]
+        event_type = row["event_type"]
         player_id = row["player_id"]
         ts = row["ts"]
         body = simplejson.dumps(row)
@@ -55,6 +55,7 @@ def insert_event(project_id, dataset_id, table_id):
     res = bigquery.tabledata().insertAll(
         projectId=project_id,
         datasetId=dataset_id,
+        # datasetId=dataset_id,
         tableId=table_id,
         body={
             "rows": data,
