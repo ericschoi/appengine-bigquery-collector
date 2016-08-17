@@ -38,19 +38,17 @@ def insert_event(project_id, dataset_id, table_id):
     data = []
     rows = [request.json] if type(request.json) == type(dict()) else request.json
     for row in rows:
-        insert_id = row["_id"]["$oid"]
         event_type = row["event_type"]
-        player_id = row["player_id"]
+        user_id = row["user_id"]
         ts = row["ts"]
         body = simplejson.dumps(row)
         data.append({
             "json": {
                 "event_type": event_type,
-                "player_id": player_id,
+                "user_id": user_id,
                 "timestamp": ts,
                 "data": body
-            },
-            "insertId": insert_id
+            }
         })
     res = bigquery.tabledata().insertAll(
         projectId=project_id,
