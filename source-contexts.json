@@ -1,0 +1,1 @@
+[{"labels": {"category": "remote_repo"}, "context": {"git": {"url": "https://github.com/mukor/appengine-bigquery-collector.git", "revisionId": "98098b68fef0ff991ac40a4779f374094e5389f6"}}}, {"labels": {"category": "remote_repo"}, "context": {"git": {"url": "https://github.com/hfwang/appengine-bigquery-collector.git", "revisionId": "98098b68fef0ff991ac40a4779f374094e5389f6"}}}]

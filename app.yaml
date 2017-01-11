@@ -1,8 +1,7 @@
-application: gg-bi-140610
+application: glengarrygames-1074
 runtime: python27
 api_version: 1
 threadsafe: yes
-version: initial
 
 handlers:
 - url: .*

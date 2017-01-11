@@ -21,7 +21,7 @@ bigquery = build('bigquery', 'v2', credentials=credentials)
 @app.route('/')
 def index():
     """Return a friendly HTTP greeting."""
-    return "Event Collector v1.0.1"
+    return "Hello World v2"
 
 
 # @app.route('/e/<project_id>/<dataset_id>', methods=["GET"])
@@ -38,6 +38,7 @@ def insert_event(project_id, dataset_id, table_id):
     data = []
     rows = [request.json] if type(request.json) == type(dict()) else request.json
     for row in rows:
+        insert_id = row["_id"]["$oid"]
         event_type = row["event_type"]
         player_id = row["player_id"]
         ts = row["ts"]
@@ -48,11 +49,13 @@ def insert_event(project_id, dataset_id, table_id):
                 "player_id": player_id,
                 "timestamp": ts,
                 "data": body
-            }
+            },
+# Is the "insertID" supposed to be a column in the table so we can dedupe?   If so should the line move up?   As is it's not getting stored"
+            "insertId": insert_id
         })
     res = bigquery.tabledata().insertAll(
         projectId=project_id,
-        datasetId=dataset_id,
+        datasetId="test",
         # datasetId=dataset_id,
         tableId=table_id,
         body={

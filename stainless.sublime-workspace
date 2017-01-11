@@ -1,0 +1,429 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"_",
+				"_SERVER"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"json",
+				"jsonData"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "import datetime\nimport uuid\nimport simplejson\n\nfrom googleapiclient.discovery import build\nfrom oauth2client.client import GoogleCredentials\nfrom six.moves.urllib.error import HTTPError\n\nfrom flask import Flask\nfrom flask import request\n\napp = Flask(__name__)\napp.secret_key = \"7W9YZ75HHZZR6RB8\"\napp.config['DEBUG'] = True\n\n\ncredentials = GoogleCredentials.get_application_default()\nbigquery = build('bigquery', 'v2', credentials=credentials)\n\n\n@app.route('/')\ndef index():\n    \"\"\"Return a friendly HTTP greeting.\"\"\"\n    return \"Hello World\"\n\n\n# @app.route('/e/<project_id>/<dataset_id>', methods=[\"GET\"])\n# def list_tables(project_id, dataset_id):\n#     \"\"\"List dataset's tables.\"\"\"\n#     return \"%r\" % bigquery.datasets().list(projectId=project_id).execute()\n\n\n@app.route('/e/<project_id>/<dataset_id>/<table_id>', methods=[\"POST\"])\ndef insert_event(project_id, dataset_id, table_id):\n    \"\"\"Insert events.\"\"\"\n    suffix = datetime.date.today().strftime(\"%Y%m%d\")\n\n    data = []\n    rows = [request.json] if type(request.json) == type(dict()) else request.json\n    for row in rows:\n        insert_id = row[\"_id\"][\"$oid\"]\n        event_key = row[\"eventKey\"]\n        player_id = row[\"playerID\"]\n        timestamp = row[\"timestamp\"]\n        body = simplejson.dumps(row)\n        data.append({\n            \"json\": {\n                \"event_key\": event_key,\n                \"player_id\": player_id,\n                \"timestamp\": timestamp,\n                \"data\": body\n            },\n            \"insertId\": insert_id\n        })\n    res = bigquery.tabledata().insertAll(\n        projectId=project_id,\n        datasetId=dataset_id,\n        tableId=table_id,\n        body={\n            \"rows\": data,\n            \"templateSuffix\": suffix\n        }).execute()\n    return \"%r\" % res\n",
+			"file": "main.py",
+			"file_size": 1771,
+			"file_write_time": 131062010870000000,
+			"settings":
+			{
+				"buffer_size": 1771,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 97,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Johnson,\n\nI don't know if you remember me or not.  Our paths crossed at EA / Playdom many years ago.   Recently a former colleague of mine, Patrick Hsieh (Playdom / Disney) reached out to me and was hoping I could make an intro to you.  Patrick is a solid PM, really hard worker, and a great guy to work with.   He saw this job listing https://www.spotify.com/se/jobs/view/olDZ2fwJ/ and wanted to get a little more first-hand information from someone at Spotify.  \n\nIs it OK if I make an intro?\n\nSpnecer",
+			"settings":
+			{
+				"buffer_size": 503,
+				"line_ending": "Unix",
+				"name": "Johnson,"
+			}
+		},
+		{
+			"file": "vendor.py",
+			"settings":
+			{
+				"buffer_size": 2812,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 374.0,
+		"last_filter": "pack dis",
+		"selected_items":
+		[
+			[
+				"pack dis",
+				"Package Control: Disable Package"
+			],
+			[
+				"mark pre ch",
+				"Markdown Preview: Open Markdown Cheat sheet"
+			],
+			[
+				"inpa",
+				"Package Control: Install Package"
+			],
+			[
+				"instal p",
+				"Package Control: Install Package"
+			],
+			[
+				"git comm",
+				"Git: Commit"
+			],
+			[
+				"git gra",
+				"Git: Graph All"
+			],
+			[
+				"git add",
+				"Git: Add All"
+			],
+			[
+				"commit",
+				"Git: Commit"
+			],
+			[
+				"comm",
+				"Git: Commit"
+			],
+			[
+				"co",
+				"Git: Commit"
+			],
+			[
+				"qui",
+				"Git: Quick Commit"
+			],
+			[
+				"git: ",
+				"Git: Commit"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 435.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/jbrooks/Dev/appengine-bigquery-collector"
+	],
+	"file_history":
+	[
+		"/Users/jbrooks/Downloads/error_log",
+		"/Users/jbrooks/Library/Application Support/Sublime Text 3/Packages/Anaconda/Anaconda.sublime-settings",
+		"/Users/jbrooks/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/jbrooks/Library/Application Support/Sublime Text 3/Packages/User/Python.sublime-settings",
+		"/Users/jbrooks/Dev/appengine-bigquery-collector/main.py",
+		"/Users/jbrooks/Dev/appengine-bigquery-collector/vendor.py",
+		"/Users/jbrooks/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/jbrooks/Library/Application Support/Sublime Text 3/Packages/User/Anaconda.sublime-settings",
+		"/Users/jbrooks/Dev/stainless_crashers/README.md",
+		"/Users/jbrooks/Dev/stainless_crashers/GameSparksCode/event/buyGoodie.js",
+		"/Users/jbrooks/Dev/stainless_crashers/GameSparksCode/event/ggTestEvent1.js",
+		"/Users/jbrooks/Dev/stainless_crashers/GameSparksCode/event/levelUp.js",
+		"/Users/jbrooks/Dev/stainless_crashers/GameSparksCode/modules/GGMetrics.js",
+		"/Users/jbrooks/Dev/stainless_crashers/GameSparksCode/modules/GGLogger.js",
+		"/Users/jbrooks/Dev/stainless_crashers/GameSparksCode/event/GameSparks.sublime-project",
+		"/Users/jbrooks/Dev/stainless_crashers/GameSparks.sublime-project",
+		"/Users/jbrooks/Desktop/stainless/curl_scratch_pad",
+		"/Users/jbrooks/Downloads/gg_raw_log_1461221760.txt",
+		"/Users/jbrooks/Desktop/php.ini",
+		"/Users/jbrooks/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/jbrooks/Desktop/postdata.html",
+		"/Users/jbrooks/Desktop/archive/contacts/Denise Remhof.vcf",
+		"/Volumes/Drobo5N/drb141601a00985/1/drobo_5n/archive_documents/word_docs/f_list.txt",
+		"/Users/jbrooks/Desktop/f_Dump copy.txt",
+		"/Users/jbrooks/Desktop/Ex_Files_iOS_App_Dev_Swift/Exercise Files/ch05/assets/0503_array_of_course_tuples.txt",
+		"/Users/jbrooks/Desktop/old_addresses.txt",
+		"/Users/jbrooks/Desktop/old addresses",
+		"/Users/jbrooks/Desktop/bash_profile"
+	],
+	"find":
+	{
+		"height": 33.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"selectrace",
+			"Player_updateLevel",
+			"\\n",
+			"\\\""
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"\n",
+			"\""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "main.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1771,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1231,
+								1231
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "README.md",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 97,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 503,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								503,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_name": "Johnson,",
+							"default_dir": "/Users/jbrooks/Dev/appengine-bigquery-collector",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "vendor.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2812,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1174,
+								1174
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 374.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 100.0
+	},
+	"pinned_build_system": "",
+	"project": "stainless.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 318.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
